@@ -12,29 +12,35 @@ function parse(text) {
 	condensed = {};
 	rows = text.split('\n');
 	
+	var finalString = "";
+	
 	if (rows.length === 0) {
 		return "Empty!";
 	}
 	
+	var first = true;
 	for (var i = 0; i < rows.length; i++) {
 		var cells = rows[i].split('\t');
-		var index = cells.length - 2;
-		console.log(index);
 		
-		condensed[cells[index].toString()] = (condensed[cells[index].toString()]) ? condensed[cells[index].toString()] + 1 : 1;
-	}
-	
-	var finalString = "";
-	
-	var firstPass = true;
-	for (p in condensed) {
-		if (!firstPass) {
-			finalString += ", ";
-		} else {
-			firstPass = false;
+		
+		if (cells[0] === "Moon")
+			continue;
+		else if (cells[0]) {
+			if (finalString)
+				finalString += "\n";
+			finalString += cells[0] + "\t";
+			first = true;
+			continue;
+		}
+		else {
+			if (!first)
+				finalString += " & ";
+			else
+				first = false;
+			finalString += cells[1] + "(" + Math.round(parseFloat(cells[2]) * 10000)/100 + "%)";
+			continue;
 		}
 		
-		finalString += p + " x" + condensed[p];
 	}
 	
 	return finalString;
